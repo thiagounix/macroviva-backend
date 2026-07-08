@@ -1,0 +1,17 @@
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Infrastructure.deps.json
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Infrastructure.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Infrastructure.pdb
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Application.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Domain.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Application.pdb
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Domain.pdb
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.AssemblyInfo.cs
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViv.FA41F13E.Up2Date
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\refint\MacroViva.Infrastructure.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.pdb
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\ref\MacroViva.Infrastructure.dll

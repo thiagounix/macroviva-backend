@@ -1,0 +1,56 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "MacroViva.Infrastructure/1.0.0": {
+        "dependencies": {
+          "MacroViva.Application": "1.0.0",
+          "MacroViva.Domain": "1.0.0"
+        },
+        "runtime": {
+          "MacroViva.Infrastructure.dll": {}
+        }
+      },
+      "MacroViva.Application/1.0.0": {
+        "dependencies": {
+          "MacroViva.Domain": "1.0.0"
+        },
+        "runtime": {
+          "MacroViva.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "MacroViva.Domain/1.0.0": {
+        "runtime": {
+          "MacroViva.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MacroViva.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MacroViva.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MacroViva.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
