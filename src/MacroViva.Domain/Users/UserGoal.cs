@@ -6,6 +6,11 @@ namespace MacroViva.Domain.Users;
 
 public sealed class UserGoal : Entity
 {
+    private UserGoal()
+    {
+        DailyTargets = null!;
+    }
+
     private UserGoal(Guid id, Guid userId, UserObjective objective, ActivityLevel activityLevel, DailyTargets dailyTargets)
         : base(id)
     {

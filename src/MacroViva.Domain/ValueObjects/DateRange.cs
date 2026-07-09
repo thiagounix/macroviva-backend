@@ -4,6 +4,10 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record DateRange
 {
+    private DateRange()
+    {
+    }
+
     public DateRange(DateOnly startsOn, DateOnly? endsOn = null)
     {
         if (endsOn.HasValue && endsOn.Value < startsOn)

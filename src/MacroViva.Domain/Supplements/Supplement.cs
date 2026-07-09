@@ -6,6 +6,12 @@ namespace MacroViva.Domain.Supplements;
 
 public sealed class Supplement : AggregateRoot
 {
+    private Supplement()
+    {
+        Name = null!;
+        MacronutrientsPerServing = null!;
+    }
+
     private Supplement(
         Guid id,
         LocalizedName name,

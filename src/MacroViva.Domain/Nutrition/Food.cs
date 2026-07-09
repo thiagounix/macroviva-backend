@@ -8,6 +8,12 @@ public sealed class Food : AggregateRoot
 {
     private readonly List<FoodPortion> _portions = [];
 
+    private Food()
+    {
+        Name = null!;
+        NutritionPer100g = null!;
+    }
+
     private Food(
         Guid id,
         LocalizedName name,

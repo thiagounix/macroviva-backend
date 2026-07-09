@@ -4,6 +4,11 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record DailyTargets
 {
+    private DailyTargets()
+    {
+        TargetMacronutrients = null!;
+    }
+
     public DailyTargets(Macronutrients targetMacronutrients)
     {
         TargetMacronutrients = targetMacronutrients ?? throw new ArgumentNullException(nameof(targetMacronutrients));

@@ -6,6 +6,13 @@ namespace MacroViva.Domain.Meals;
 
 public sealed class MealItem : Entity
 {
+    private MealItem()
+    {
+        FoodNameSnapshot = null!;
+        Portion = null!;
+        MacronutrientsSnapshot = null!;
+    }
+
     private MealItem(
         Guid id,
         Guid mealId,

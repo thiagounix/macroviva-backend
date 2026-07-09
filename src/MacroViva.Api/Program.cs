@@ -3,6 +3,7 @@ using MacroViva.Application.Foods;
 using MacroViva.Application.Meals;
 using MacroViva.Application.Supplements;
 using MacroViva.Infrastructure;
+using MacroViva.Infrastructure.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -45,6 +46,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    if (app.Configuration.GetValue<bool>("Seed:RunOnStartup"))
+    {
+        using var scope = app.Services.CreateScope();
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        await seeder.SeedDevelopmentDataAsync(app.Lifetime.ApplicationStopping);
+    }
 }
 
 app.UseHttpsRedirection();

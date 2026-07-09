@@ -4,6 +4,11 @@ namespace MacroViva.Domain.ConsentAndPrivacy;
 
 public sealed class UserConsent : Entity
 {
+    private UserConsent()
+    {
+        ConsentKey = string.Empty;
+    }
+
     private UserConsent(Guid id, Guid userId, string consentKey, bool isGranted, DateTimeOffset decidedAt)
         : base(id)
     {

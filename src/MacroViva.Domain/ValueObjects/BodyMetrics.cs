@@ -4,6 +4,10 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record BodyMetrics
 {
+    private BodyMetrics()
+    {
+    }
+
     public BodyMetrics(decimal weightKg, decimal heightCm, decimal? bodyFatPercentage = null)
     {
         WeightKg = Guard.AgainstZeroOrNegative(weightKg, nameof(weightKg));

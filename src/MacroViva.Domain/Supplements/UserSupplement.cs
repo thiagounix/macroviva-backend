@@ -5,6 +5,11 @@ namespace MacroViva.Domain.Supplements;
 
 public sealed class UserSupplement : AggregateRoot
 {
+    private UserSupplement()
+    {
+        MacronutrientImpact = null!;
+    }
+
     private UserSupplement(
         Guid id,
         Guid userId,

@@ -5,6 +5,12 @@ namespace MacroViva.Domain.Nutrition;
 
 public sealed class FoodPortion : Entity
 {
+    private FoodPortion()
+    {
+        Name = null!;
+        Portion = null!;
+    }
+
     private FoodPortion(Guid id, Guid foodId, LocalizedName name, Portion portion)
         : base(id)
     {

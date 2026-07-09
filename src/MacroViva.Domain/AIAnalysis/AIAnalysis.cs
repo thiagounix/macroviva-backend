@@ -7,6 +7,10 @@ public sealed class AIAnalysis : AggregateRoot
 {
     private readonly List<AIAnalysisItem> _items = [];
 
+    private AIAnalysis()
+    {
+    }
+
     private AIAnalysis(Guid id, Guid userId, AIAnalysisStatus status, DateTimeOffset createdAt)
         : base(id)
     {

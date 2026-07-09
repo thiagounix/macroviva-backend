@@ -10,6 +10,11 @@ public sealed class Meal : AggregateRoot
     private readonly List<MealItem> _items = [];
     private readonly List<MealPhoto> _photos = [];
 
+    private Meal()
+    {
+        TotalMacronutrients = null!;
+    }
+
     private Meal(Guid id, Guid userId, MealType mealType, DateTimeOffset occurredAt)
         : base(id)
     {

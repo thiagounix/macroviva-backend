@@ -11,22 +11,47 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
 {
     public async Task SeedDevelopmentDataAsync(CancellationToken cancellationToken)
     {
-        if (!await dbContext.Foods.AnyAsync(cancellationToken))
-        {
-            dbContext.Foods.AddRange(CreateFoods());
-        }
-
-        if (!await dbContext.Supplements.AnyAsync(cancellationToken))
-        {
-            dbContext.Supplements.AddRange(CreateSupplements());
-        }
-
-        if (!await dbContext.SubscriptionPlans.AnyAsync(cancellationToken))
-        {
-            dbContext.SubscriptionPlans.AddRange(CreateSubscriptionPlans());
-        }
+        await AddMissingFoodsAsync(cancellationToken);
+        await AddMissingSupplementsAsync(cancellationToken);
+        await AddMissingSubscriptionPlansAsync(cancellationToken);
 
         await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    private async Task AddMissingFoodsAsync(CancellationToken cancellationToken)
+    {
+        var foods = CreateFoods();
+        var foodIds = foods.Select(food => food.Id).ToList();
+        var existingIds = await dbContext.Foods
+            .Where(food => foodIds.Contains(food.Id))
+            .Select(food => food.Id)
+            .ToListAsync(cancellationToken);
+
+        dbContext.Foods.AddRange(foods.Where(food => !existingIds.Contains(food.Id)));
+    }
+
+    private async Task AddMissingSupplementsAsync(CancellationToken cancellationToken)
+    {
+        var supplements = CreateSupplements();
+        var supplementIds = supplements.Select(supplement => supplement.Id).ToList();
+        var existingIds = await dbContext.Supplements
+            .Where(supplement => supplementIds.Contains(supplement.Id))
+            .Select(supplement => supplement.Id)
+            .ToListAsync(cancellationToken);
+
+        dbContext.Supplements.AddRange(supplements.Where(supplement => !existingIds.Contains(supplement.Id)));
+    }
+
+    private async Task AddMissingSubscriptionPlansAsync(CancellationToken cancellationToken)
+    {
+        var plans = CreateSubscriptionPlans();
+        var planIds = plans.Select(plan => plan.Id).ToList();
+        var existingIds = await dbContext.SubscriptionPlans
+            .Where(plan => planIds.Contains(plan.Id))
+            .Select(plan => plan.Id)
+            .ToListAsync(cancellationToken);
+
+        dbContext.SubscriptionPlans.AddRange(plans.Where(plan => !existingIds.Contains(plan.Id)));
     }
 
     private static IReadOnlyList<Food> CreateFoods()

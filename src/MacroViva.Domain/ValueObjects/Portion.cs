@@ -4,6 +4,11 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record Portion
 {
+    private Portion()
+    {
+        Unit = string.Empty;
+    }
+
     private Portion(decimal quantity, string unit, decimal grams)
     {
         Quantity = Guard.AgainstZeroOrNegative(quantity, nameof(quantity));

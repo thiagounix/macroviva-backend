@@ -6,6 +6,12 @@ namespace MacroViva.Domain.AIAnalysis;
 
 public sealed class AIAnalysisItem : Entity
 {
+    private AIAnalysisItem()
+    {
+        SuggestedFoodName = string.Empty;
+        EstimatedPortion = null!;
+    }
+
     private AIAnalysisItem(
         Guid id,
         string suggestedFoodName,

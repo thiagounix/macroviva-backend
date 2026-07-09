@@ -5,6 +5,11 @@ namespace MacroViva.Domain.Users;
 
 public sealed class UserProfile : Entity
 {
+    private UserProfile()
+    {
+        DisplayName = null!;
+    }
+
     private UserProfile(Guid id, Guid userId, LocalizedName displayName, BodyMetrics? bodyMetrics)
         : base(id)
     {

@@ -4,6 +4,12 @@ namespace MacroViva.Domain.Meals;
 
 public sealed class MealPhoto : Entity
 {
+    private MealPhoto()
+    {
+        TemporaryReference = string.Empty;
+        ContentType = string.Empty;
+    }
+
     private MealPhoto(Guid id, Guid mealId, string temporaryReference, string contentType, DateTimeOffset capturedAt)
         : base(id)
     {

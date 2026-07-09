@@ -4,6 +4,11 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record Money
 {
+    private Money()
+    {
+        Currency = string.Empty;
+    }
+
     public Money(decimal amount, string currency)
     {
         Amount = Guard.AgainstNegative(amount, nameof(amount));

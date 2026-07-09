@@ -5,6 +5,11 @@ namespace MacroViva.Domain.ValueObjects;
 
 public sealed record LocalizedName
 {
+    private LocalizedName()
+    {
+        Value = string.Empty;
+    }
+
     public LocalizedName(string value, LocaleCode locale)
     {
         Value = Guard.AgainstNullOrWhiteSpace(value, nameof(value));

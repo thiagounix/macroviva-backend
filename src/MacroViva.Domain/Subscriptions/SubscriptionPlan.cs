@@ -6,6 +6,13 @@ namespace MacroViva.Domain.Subscriptions;
 
 public sealed class SubscriptionPlan : AggregateRoot
 {
+    private SubscriptionPlan()
+    {
+        Name = null!;
+        Price = null!;
+        Availability = null!;
+    }
+
     private SubscriptionPlan(
         Guid id,
         LocalizedName name,

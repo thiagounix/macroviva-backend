@@ -6,6 +6,10 @@ public sealed record Macronutrients
 {
     public static Macronutrients Zero { get; } = new(0, 0, 0, 0);
 
+    private Macronutrients()
+    {
+    }
+
     public Macronutrients(decimal calories, decimal proteinGrams, decimal carbohydrateGrams, decimal fatGrams)
     {
         Calories = Guard.AgainstNegative(calories, nameof(calories));

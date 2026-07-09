@@ -8,6 +8,11 @@ public sealed class User : AggregateRoot
 {
     private readonly List<UserConsent> _consents = [];
 
+    private User()
+    {
+        Email = string.Empty;
+    }
+
     private User(Guid id, string email, LocaleCode locale, DateTimeOffset createdAt)
         : base(id)
     {
