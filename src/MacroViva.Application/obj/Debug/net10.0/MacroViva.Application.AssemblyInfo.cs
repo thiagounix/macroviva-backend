@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MacroViva.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78387eb8571b72eaed229a20ad9136c3cc1b5cca")]
 [assembly: System.Reflection.AssemblyProductAttribute("MacroViva.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MacroViva.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
