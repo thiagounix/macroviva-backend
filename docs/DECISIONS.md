@@ -73,3 +73,29 @@ Autenticacao real, JWT, Apple/Google login e refresh token ficam fora do dominio
 `UserSubscription` sera tratado como aggregate root separado, vinculado por `UserId` e `SubscriptionPlanId`, porque assinatura tem ciclo de vida proprio.
 
 `User` nao deve virar um aggregate gigante nem conter todo o historico de refeicoes, suplementos ou assinaturas.
+
+## MV-015: Result Pattern na Application Layer
+
+A camada `Application` usa `Result<T>` para respostas previsiveis de casos de uso.
+
+O dominio continua podendo lancar `DomainException` para proteger invariantes. A Application deve prevenir erros conhecidos quando possivel e converter `DomainException` em `Result.Failure`, sem deixar exceptions virarem fluxo normal da futura API.
+
+## MV-016: Application orquestra, Domain decide regras centrais
+
+Casos de uso da `Application` coordenam repositorios, servicos externos abstratos e aggregates do dominio.
+
+A criacao de uma refeicao confirmada a partir de uma analise de imagem usa o `selectedFoodId` enviado pelo usuario. `AIAnalysisItem.SuggestedFoodId` permanece apenas sugestao da IA e nunca representa confirmacao final.
+
+Contratos da Application nao devem depender de ASP.NET. Uploads futuros devem ser adaptados na API para abstracoes neutras como `Stream`, `fileName` e `contentType`.
+
+## MV-017: Sem CQRS/MediatR/AutoMapper nesta fase
+
+Para o MVP inicial, os casos de uso ficam como classes explicitas e pequenas. Nao foram adicionados MediatR, CQRS completo, AutoMapper ou outros pacotes de orquestracao.
+
+Essa escolha reduz complexidade enquanto os fluxos principais ainda estao sendo descobertos.
+
+## MV-018: IClock.Today e timezone do usuario
+
+`IClock.Today` existe como abstracao simples para consultas e check-ins diarios no MVP.
+
+Em etapa futura, datas locais devem considerar timezone/locale do usuario. A regra atual nao deve ser usada como decisao final para usuarios em fusos diferentes.

@@ -13,43 +13,62 @@ Backlog tecnico por etapas. Este documento orienta a sequencia de evolucao sem a
 - Garantir `dotnet build`.
 - Garantir `dotnet test`.
 
-## Etapa 2: Estrutura de aplicacao
-
-- Criar extensoes de DI por camada.
-- Definir padrao de resultados/erros de aplicacao.
-- Definir contratos de comandos/queries, sem escolher complexidade desnecessaria.
-- Criar testes de arquitetura para dependencias entre projetos.
-
-## Etapa 3: Persistencia inicial
-
-- Criar `DbContext` inicial.
-- Configurar connection string por ambiente.
-- Definir estrategia de migrations.
-- Adicionar health checks de banco.
-- Criar primeira migration apenas quando houver modelo real.
-
-## Etapa 4: Dominio inicial
+## Etapa 2: Dominio inicial
 
 - Modelar primeiros agregados pequenos.
 - Implementar invariantes centrais.
 - Criar testes unitarios de dominio.
 - Evitar entidades completas antes de fechar linguagem ubiqua.
 
+## Etapa 2.1: Domain Hardening
+
+- Ajustar ciclo de vida de `AIAnalysis`.
+- Garantir que sugestoes da IA nao virem refeicao automaticamente.
+- Separar check-ins e assinaturas como aggregates com ciclo proprio.
+- Registrar decisoes para manter `User` fora de autenticacao real.
+
+## Etapa 3: Application Layer
+
+- Criar `Result<T>` e catalogo simples de erros.
+- Criar portas de repositorio e servicos externos como abstracoes.
+- Criar contratos DTO neutros, sem tipos de ASP.NET.
+- Implementar casos de uso iniciais para catalogo de alimentos, refeicoes, analise de foto e suplementos.
+- Converter `DomainException` para `Result.Failure`.
+- Substituir teste placeholder por testes reais com fakes manuais.
+
+## Etapa 4: Infrastructure e persistencia inicial
+
+- Implementar repositorios com EF Core.
+- Criar `DbContext` inicial.
+- Configurar connection string por ambiente.
+- Definir estrategia de migrations.
+- Implementar adapters mock para storage e IA.
+- Adicionar health checks de banco.
+- Criar primeira migration apenas quando houver modelo validado.
+
 ## Etapa 5: API inicial
 
 - Criar endpoints REST de primeiro fluxo.
 - Usar `async/await` e `CancellationToken`.
-- Padronizar respostas e erros.
+- Padronizar respostas HTTP a partir de `Result<T>`.
+- Adaptar upload HTTP para contratos neutros da Application.
 - Expandir OpenAPI.
 
-## Etapa 6: IA mock
+## Etapa 6: Autenticacao e usuario corrente
+
+- Implementar autenticacao real.
+- Definir `CurrentUserService` real.
+- Validar autorizacao por usuario.
+- Manter senha, refresh token e providers externos fora do dominio.
+
+## Etapa 7: IA mock e observabilidade
 
 - Definir porta de aplicacao para analise de imagem.
 - Implementar adapter mock na infraestrutura.
 - Validar fluxo sem chamada externa real.
+- Adicionar logs e metricas dos fluxos principais.
 
-## Etapa 7: Seguranca
+## Etapa 8: Seguranca e privacidade operacional
 
-- Implementar autenticacao real.
-- Definir autorizacao por usuario.
 - Tratar consentimento, auditoria e retencao de dados sensiveis.
+- Revisar LGPD, retencao de imagens e exclusao de conta.

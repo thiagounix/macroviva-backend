@@ -13,3 +13,4 @@ C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Application\
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Application\obj\Debug\net10.0\refint\MacroViva.Application.dll
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Application\obj\Debug\net10.0\MacroViva.Application.pdb
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Application\obj\Debug\net10.0\ref\MacroViva.Application.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Application\obj\Debug\net10.0\MacroViva.Application.sourcelink.json

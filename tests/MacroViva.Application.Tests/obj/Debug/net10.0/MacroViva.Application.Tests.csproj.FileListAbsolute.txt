@@ -100,3 +100,4 @@ C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Applicatio
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Application.Tests\obj\Debug\net10.0\MacroViva.Application.Tests.pdb
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Application.Tests\obj\Debug\net10.0\MacroViva.Application.Tests.genruntimeconfig.cache
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Application.Tests\obj\Debug\net10.0\ref\MacroViva.Application.Tests.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Application.Tests\obj\Debug\net10.0\MacroViva.Application.Tests.sourcelink.json

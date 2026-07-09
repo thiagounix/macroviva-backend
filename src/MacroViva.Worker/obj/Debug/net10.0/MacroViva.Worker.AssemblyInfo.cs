@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MacroViva.Worker")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+688e1246e10d122fb1c069fea2cdb578e987fcc5")]
 [assembly: System.Reflection.AssemblyProductAttribute("MacroViva.Worker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MacroViva.Worker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

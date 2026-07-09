@@ -98,3 +98,4 @@ C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Domain.Tes
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Domain.Tests\obj\Debug\net10.0\MacroViva.Domain.Tests.pdb
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Domain.Tests\obj\Debug\net10.0\MacroViva.Domain.Tests.genruntimeconfig.cache
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Domain.Tests\obj\Debug\net10.0\ref\MacroViva.Domain.Tests.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\tests\MacroViva.Domain.Tests\obj\Debug\net10.0\MacroViva.Domain.Tests.sourcelink.json

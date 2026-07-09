@@ -15,3 +15,6 @@ C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructu
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\refint\MacroViva.Infrastructure.dll
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.pdb
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\ref\MacroViva.Infrastructure.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\bin\Debug\net10.0\MacroViva.Infrastructure.runtimeconfig.json
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.sourcelink.json
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Infrastructure\obj\Debug\net10.0\MacroViva.Infrastructure.genruntimeconfig.cache

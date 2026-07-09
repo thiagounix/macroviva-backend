@@ -27,7 +27,7 @@ public sealed class CreateManualMealUseCase(
             return Result<MealDto>.Failure(Error.Validation("Meal.InvalidRequest", "Meal request is required."));
         }
 
-        if (request.Items.Count == 0)
+        if (request.Items is null || request.Items.Count == 0)
         {
             return Result<MealDto>.Failure(Error.Validation("Meal.EmptyItems", "Meal must contain at least one item."));
         }

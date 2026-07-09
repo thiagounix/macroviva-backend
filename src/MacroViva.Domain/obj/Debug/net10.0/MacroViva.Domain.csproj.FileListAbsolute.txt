@@ -9,3 +9,4 @@ C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Domain\obj\D
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Domain\obj\Debug\net10.0\refint\MacroViva.Domain.dll
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Domain\obj\Debug\net10.0\MacroViva.Domain.pdb
 C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Domain\obj\Debug\net10.0\ref\MacroViva.Domain.dll
+C:\Users\thiag\source\Fit\MacroViva\macroviva-backend\src\MacroViva.Domain\obj\Debug\net10.0\MacroViva.Domain.sourcelink.json

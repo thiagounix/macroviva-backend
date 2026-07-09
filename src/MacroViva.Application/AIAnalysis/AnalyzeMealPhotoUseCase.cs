@@ -59,6 +59,11 @@ public sealed class AnalyzeMealPhotoUseCase(
                     storedFile.ContentType),
                 cancellationToken);
 
+            if (visionResult.Items is null || visionResult.Items.Count == 0)
+            {
+                return Result<AnalyzeMealPhotoResponse>.Failure(Error.Validation("AIAnalysis.EmptyDetectedItems", "AI analysis must return at least one detected item."));
+            }
+
             var detectedItems = visionResult.Items
                 .Select(item => AIAnalysisItem.Create(
                     Guid.NewGuid(),

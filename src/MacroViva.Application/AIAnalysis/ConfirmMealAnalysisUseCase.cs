@@ -31,7 +31,7 @@ public sealed class ConfirmMealAnalysisUseCase(
             return Result<MealDto>.Failure(Error.Validation("AIAnalysis.InvalidRequest", "Confirmation request is required."));
         }
 
-        if (request.Items.Count == 0)
+        if (request.Items is null || request.Items.Count == 0)
         {
             return Result<MealDto>.Failure(Error.Validation("AIAnalysis.EmptyConfirmedItems", "At least one confirmed item is required."));
         }
