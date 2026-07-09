@@ -22,36 +22,119 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
     {
         var foods = CreateFoods();
         var foodIds = foods.Select(food => food.Id).ToList();
-        var existingIds = await dbContext.Foods
+        var existingFoods = await dbContext.Foods
             .Where(food => foodIds.Contains(food.Id))
-            .Select(food => food.Id)
+            .Select(food => new
+            {
+                food.Id,
+                Name = food.Name.Value,
+                food.Category,
+                food.IsSupplement
+            })
             .ToListAsync(cancellationToken);
 
-        dbContext.Foods.AddRange(foods.Where(food => !existingIds.Contains(food.Id)));
+        var seedNames = foods.Select(food => food.Name.Value).ToList();
+        var existingFoodsByNaturalKey = await dbContext.Foods
+            .Where(food => seedNames.Contains(food.Name.Value))
+            .Select(food => new
+            {
+                food.Id,
+                Name = food.Name.Value,
+                food.Category,
+                food.IsSupplement
+            })
+            .ToListAsync(cancellationToken);
+
+        var existingKeys = existingFoods
+            .Concat(existingFoodsByNaturalKey)
+            .SelectMany(food => new[]
+            {
+                FoodKey(food.Id, food.Name, food.Category, food.IsSupplement),
+                FoodNaturalKey(food.Name, food.Category, food.IsSupplement)
+            })
+            .ToHashSet();
+
+        dbContext.Foods.AddRange(foods.Where(food =>
+            !existingKeys.Contains(FoodKey(food.Id, food.Name.Value, food.Category, food.IsSupplement)) &&
+            !existingKeys.Contains(FoodNaturalKey(food.Name.Value, food.Category, food.IsSupplement))));
     }
 
     private async Task AddMissingSupplementsAsync(CancellationToken cancellationToken)
     {
         var supplements = CreateSupplements();
         var supplementIds = supplements.Select(supplement => supplement.Id).ToList();
-        var existingIds = await dbContext.Supplements
+        var existingSupplements = await dbContext.Supplements
             .Where(supplement => supplementIds.Contains(supplement.Id))
-            .Select(supplement => supplement.Id)
+            .Select(supplement => new
+            {
+                supplement.Id,
+                Name = supplement.Name.Value,
+                supplement.Type
+            })
             .ToListAsync(cancellationToken);
 
-        dbContext.Supplements.AddRange(supplements.Where(supplement => !existingIds.Contains(supplement.Id)));
+        var seedNames = supplements.Select(supplement => supplement.Name.Value).ToList();
+        var existingSupplementsByNaturalKey = await dbContext.Supplements
+            .Where(supplement => seedNames.Contains(supplement.Name.Value))
+            .Select(supplement => new
+            {
+                supplement.Id,
+                Name = supplement.Name.Value,
+                supplement.Type
+            })
+            .ToListAsync(cancellationToken);
+
+        var existingKeys = existingSupplements
+            .Concat(existingSupplementsByNaturalKey)
+            .SelectMany(supplement => new[]
+            {
+                SupplementKey(supplement.Id, supplement.Name, supplement.Type),
+                SupplementNaturalKey(supplement.Name, supplement.Type)
+            })
+            .ToHashSet();
+
+        dbContext.Supplements.AddRange(supplements.Where(supplement =>
+            !existingKeys.Contains(SupplementKey(supplement.Id, supplement.Name.Value, supplement.Type)) &&
+            !existingKeys.Contains(SupplementNaturalKey(supplement.Name.Value, supplement.Type))));
     }
 
     private async Task AddMissingSubscriptionPlansAsync(CancellationToken cancellationToken)
     {
         var plans = CreateSubscriptionPlans();
         var planIds = plans.Select(plan => plan.Id).ToList();
-        var existingIds = await dbContext.SubscriptionPlans
+        var existingPlans = await dbContext.SubscriptionPlans
             .Where(plan => planIds.Contains(plan.Id))
-            .Select(plan => plan.Id)
+            .Select(plan => new
+            {
+                plan.Id,
+                Name = plan.Name.Value,
+                plan.Tier
+            })
             .ToListAsync(cancellationToken);
 
-        dbContext.SubscriptionPlans.AddRange(plans.Where(plan => !existingIds.Contains(plan.Id)));
+        var seedNames = plans.Select(plan => plan.Name.Value).ToList();
+        var existingPlansByNaturalKey = await dbContext.SubscriptionPlans
+            .Where(plan => seedNames.Contains(plan.Name.Value))
+            .Select(plan => new
+            {
+                plan.Id,
+                Name = plan.Name.Value,
+                plan.Tier
+            })
+            .ToListAsync(cancellationToken);
+
+        var existingKeys = existingPlans
+            .Concat(existingPlansByNaturalKey)
+            .SelectMany(plan => new[]
+            {
+                SubscriptionPlanKey(plan.Id, plan.Name, plan.Tier),
+                SubscriptionPlanNaturalKey(plan.Name, plan.Tier)
+            })
+            .ToHashSet();
+
+        dbContext.SubscriptionPlans.AddRange(plans.Where(plan =>
+            !existingKeys.Contains(SubscriptionPlanKey(plan.Id, plan.Name.Value, plan.Tier)) &&
+            !existingKeys.Contains(SubscriptionPlanNaturalKey(plan.Name.Value, plan.Tier))));
     }
 
     private static IReadOnlyList<Food> CreateFoods()
@@ -155,5 +238,35 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
         decimal fatGrams)
     {
         return new NutritionPer100g(new Macronutrients(calories, proteinGrams, carbohydrateGrams, fatGrams));
+    }
+
+    private static string FoodKey(Guid id, string name, FoodCategory category, bool isSupplement)
+    {
+        return $"id:{id}|name:{name}|category:{category}|supplement:{isSupplement}";
+    }
+
+    private static string FoodNaturalKey(string name, FoodCategory category, bool isSupplement)
+    {
+        return $"name:{name}|category:{category}|supplement:{isSupplement}";
+    }
+
+    private static string SupplementKey(Guid id, string name, SupplementType type)
+    {
+        return $"id:{id}|name:{name}|type:{type}";
+    }
+
+    private static string SupplementNaturalKey(string name, SupplementType type)
+    {
+        return $"name:{name}|type:{type}";
+    }
+
+    private static string SubscriptionPlanKey(Guid id, string name, SubscriptionTier tier)
+    {
+        return $"id:{id}|name:{name}|tier:{tier}";
+    }
+
+    private static string SubscriptionPlanNaturalKey(string name, SubscriptionTier tier)
+    {
+        return $"name:{name}|tier:{tier}";
     }
 }

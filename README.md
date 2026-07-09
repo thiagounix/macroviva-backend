@@ -78,6 +78,20 @@ Para subir o SQL Server local com os valores de desenvolvimento versionados em e
 docker compose --env-file infra/.env.example -f infra/docker-compose.yml up -d
 ```
 
+Verificar container:
+
+```powershell
+docker ps
+docker logs macroviva-sqlserver
+```
+
+Se o nome `macroviva-sqlserver` ja existir em outro container local, pare ou remova o container antigo antes de subir novamente:
+
+```powershell
+docker stop macroviva-sqlserver
+docker rm macroviva-sqlserver
+```
+
 Opcionalmente copie `infra/.env.example` para `infra/.env`, ajuste a senha local e use:
 
 ```powershell
@@ -108,6 +122,8 @@ Criar migration:
 dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Api --output-dir Persistence/Migrations
 ```
 
+Este comando so deve ser executado se a migration inicial ainda nao existir no repositorio.
+
 Aplicar migration:
 
 ```powershell
@@ -133,7 +149,8 @@ Seed de desenvolvimento:
 - suplementos iniciais como creatina e whey.
 - planos Free, Plus e Pro.
 
-O seed e idempotente por IDs deterministos e pode rodar no startup apenas em Development quando `Seed:RunOnStartup=true` em `appsettings.Development.json`.
+O seed e idempotente por IDs deterministicos e pode rodar no startup apenas em Development quando `Seed:RunOnStartup=true` em `appsettings.Development.json`.
+Ele tambem verifica chave natural simples antes de inserir, evitando duplicidade se dados equivalentes ja existirem.
 
 ## Endpoints iniciais e smoke test
 

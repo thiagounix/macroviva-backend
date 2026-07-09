@@ -135,7 +135,13 @@ Autenticacao JWT permanece preparada/inativa, sem obrigar autorizacao nos endpoi
 
 Dados iniciais de desenvolvimento sao inseridos por `DatabaseSeeder` apenas em Development quando `Seed:RunOnStartup=true`.
 
-O seed usa IDs deterministicos para alimentos, suplementos e planos de assinatura. Antes de inserir, consulta os IDs existentes e adiciona apenas os itens ausentes, evitando duplicidade em execucoes repetidas.
+O seed usa IDs deterministicos para alimentos, suplementos e planos de assinatura. Antes de inserir, consulta IDs existentes e chave natural simples:
+
+- alimentos: nome, categoria e indicador de suplemento;
+- suplementos: nome e tipo;
+- planos: nome e tier.
+
+Com isso, execucoes repetidas nao duplicam dados e dados equivalentes inseridos manualmente nao recebem duplicata do seed.
 
 O seed nao contem dados sensiveis reais.
 
