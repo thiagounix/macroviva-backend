@@ -31,27 +31,79 @@ O produto nao substitui medico, nutricionista ou outro profissional de saude.
 - File/object storage, se for aprovado no futuro
 - Observability
 
-## Bounded contexts candidatos
+## Bounded contexts iniciais
+
+### Users
+
+Responsavel pela identidade de dominio do usuario, perfil, objetivos e dados sensiveis necessarios para personalizacao.
+
+Aggregates e entidades iniciais:
+
+- `User`
+- `UserProfile`
+- `UserGoal`
 
 ### Nutrition
 
-Responsavel por alimentos, nutrientes, medidas, porcoes e calculo de macros.
+Responsavel por alimentos, nutrientes, medidas, porcoes e calculo de macros usando a base nutricional propria.
 
-### Meal Tracking
+Aggregates e entidades iniciais:
 
-Responsavel por refeicoes registradas, confirmacao do usuario e historico alimentar.
+- `Food`
+- `FoodPortion`
 
-### AI Analysis
+### Meals
 
-Responsavel por transformar imagem em candidatos de alimentos e porcoes estimadas. Nao e fonte da verdade nutricional.
+Responsavel por refeicoes confirmadas, itens registrados, fotos temporarias e historico alimentar.
 
-### User Profile
+Aggregates e entidades iniciais:
 
-Responsavel por preferencias, metas e informacoes do usuario necessarias para personalizacao segura.
+- `Meal`
+- `MealItem`
+- `MealPhoto`
 
-### Identity
+### AIAnalysis
 
-Responsavel por autenticacao, autorizacao e isolamento de dados por usuario.
+Responsavel por transformar imagem em candidatos de alimentos e porcoes estimadas. Nao e fonte da verdade nutricional e nao cria refeicao automaticamente.
+
+Aggregates e entidades iniciais:
+
+- `AIAnalysis`
+- `AIAnalysisItem`
+
+Fluxo correto:
+
+```text
+Photo -> AIAnalysis -> Suggested items -> User confirmation -> Application creates Meal
+```
+
+`AIAnalysisItem.SuggestedFoodId` representa apenas uma sugestao ou candidato gerado por IA/matching. Ele nao e o alimento final confirmado. A selecao final sera feita futuramente pela camada Application a partir da confirmacao explicita do usuario.
+
+### Supplements
+
+Responsavel por suplementos basicos. Whey pode impactar macros; creatina pode ser check-in sem impacto nutricional relevante.
+
+Aggregates e entidades iniciais:
+
+- `Supplement`
+- `UserSupplement`
+
+### Subscriptions
+
+Responsavel por planos e assinaturas em nivel de dominio, sem pagamento real nesta etapa.
+
+Aggregates e entidades iniciais:
+
+- `SubscriptionPlan`
+- `UserSubscription`
+
+### ConsentAndPrivacy
+
+Responsavel por consentimentos e premissas de privacidade relacionadas a dados sensiveis.
+
+Aggregates e entidades iniciais:
+
+- `UserConsent`
 
 ## Linguagem ubiqua inicial
 
@@ -63,6 +115,36 @@ Responsavel por autenticacao, autorizacao e isolamento de dados por usuario.
 - Nutrition facts: informacoes nutricionais por unidade ou porcao.
 - Macro calculation: calculo de calorias, proteinas, carboidratos e gorduras.
 - User goal: meta definida pelo usuario, sem prescricao profissional.
+- Macronutrients snapshot: copia dos macros calculados no momento do registro de um item de refeicao.
+- User consent: decisao explicita do usuario sobre uso de dados ou processamento sensivel.
+
+## Regras de dominio implementadas na etapa 2
+
+- `Food` possui valores nutricionais por 100g.
+- `NutritionPer100g` calcula macros por gramas usando `Portion`.
+- `Meal` pertence obrigatoriamente a um usuario.
+- `MealItem` guarda snapshot do nome e dos macros calculados no momento do registro.
+- `Meal` recalcula totais ao adicionar ou remover itens.
+- `AIAnalysis` pode iniciar como pending ou completed.
+- `AIAnalysis` nao vira `Meal` automaticamente.
+- `AIAnalysis` so pode ser confirmada se estiver completed e tiver itens sugeridos.
+- `AIAnalysis.CompletedAt` nao pode ser anterior a `CreatedAt`.
+- `AIAnalysis.ConfirmedAt` nao pode ser anterior a `CompletedAt`.
+- `AIAnalysis` nao pode ser confirmada duas vezes.
+- `AIAnalysisItem.SuggestedFoodId` e apenas sugestao, nao confirmacao final.
+- Whey protein pode gerar impacto de macros via `Supplement`.
+- Creatina pode ser registrada como check-in sem impacto de macros.
+
+## Value objects iniciais
+
+- `Macronutrients`
+- `NutritionPer100g`
+- `Portion`
+- `BodyMetrics`
+- `DailyTargets`
+- `LocalizedName`
+- `DateRange`
+- `Money`
 
 ## Perguntas em aberto
 
