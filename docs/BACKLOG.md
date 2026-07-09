@@ -49,12 +49,21 @@ Backlog tecnico por etapas. Este documento orienta a sequencia de evolucao sem a
 
 ## Etapa 5: API inicial
 
-- Criar endpoints REST de primeiro fluxo.
-- Usar `async/await` e `CancellationToken`.
-- Padronizar respostas HTTP a partir de `Result<T>`.
-- Adaptar upload HTTP para contratos neutros da Application.
-- Registrar `AddInfrastructure(...)` na composicao da API.
-- Expandir OpenAPI.
+- Criar endpoints REST de primeiro fluxo. Concluido.
+- Usar `async/await` e `CancellationToken`. Concluido.
+- Padronizar respostas HTTP a partir de `Result<T>`. Concluido.
+- Adaptar upload HTTP para contratos neutros da Application. Concluido.
+- Registrar `AddInfrastructure(...)` na composicao da API. Concluido.
+- Expandir OpenAPI. Concluido.
+- Testar persistencia real apos migration/schema.
+
+## Etapa 5.1: Persistencia executavel para desenvolvimento
+
+- Instalar/configurar `dotnet-ef`.
+- Criar migration inicial.
+- Aplicar schema no SQL Server local.
+- Executar seed de desenvolvimento.
+- Validar endpoints com persistencia real.
 
 ## Etapa 6: Autenticacao e usuario corrente
 

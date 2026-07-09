@@ -119,3 +119,13 @@ A migration inicial nao foi criada nesta etapa porque o comando `dotnet ef` nao 
 ```powershell
 dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Infrastructure --output-dir Persistence/Migrations
 ```
+
+## MV-021: Controllers finos na API
+
+A API usa controllers ASP.NET Core para expor REST e Swagger.
+
+Controllers devem apenas receber request HTTP, fazer validacoes basicas de transporte, chamar use cases da Application e converter `Result<T>` para HTTP. Eles nao acessam `DbContext`, repositories ou regras de dominio diretamente.
+
+Upload usa `IFormFile` somente na camada API. Antes de chamar Application, o controller converte para `Stream`, `fileName` e `contentType`.
+
+Autenticacao JWT permanece preparada/inativa, sem obrigar autorizacao nos endpoints desta etapa.

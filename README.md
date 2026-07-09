@@ -54,6 +54,13 @@ Esta etapa estabiliza a fundacao tecnica, dominio inicial, Application Layer e I
 dotnet restore MacroViva.sln
 dotnet build MacroViva.sln
 dotnet test MacroViva.sln
+dotnet run --project src/MacroViva.Api --launch-profile http
+```
+
+Swagger local:
+
+```text
+http://localhost:5169/swagger
 ```
 
 ## Banco local para desenvolvimento
@@ -96,6 +103,22 @@ Migration inicial ainda nao foi criada porque `dotnet-ef` nao esta disponivel no
 ```powershell
 dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Infrastructure --output-dir Persistence/Migrations
 ```
+
+## Endpoints iniciais
+
+```text
+GET  /health
+GET  /api/foods
+GET  /api/foods/{id}
+POST /api/meals
+GET  /api/meals/today
+POST /api/ai/meal-photo/analyze
+POST /api/ai/meal-photo/{analysisId}/confirm
+GET  /api/supplements
+POST /api/user-supplements/check-in
+```
+
+Os endpoints aparecem no Swagger. Como ainda nao ha migration/schema aplicado, o teste de persistencia real fica para a proxima etapa.
 
 ## Documentacao
 

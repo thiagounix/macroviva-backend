@@ -1,6 +1,6 @@
 # API Contract
 
-Contratos planejados para a REST API. Nenhum endpoint de negocio esta implementado nesta etapa.
+Contratos da REST API. Os endpoints iniciais chamam casos de uso da camada `Application` e nao contem regra de negocio.
 
 ## Principios
 
@@ -19,15 +19,16 @@ Contratos planejados para a REST API. Nenhum endpoint de negocio esta implementa
 GET /health
 ```
 
-Uso futuro: verificar disponibilidade basica da API e dependencias criticas.
+Verifica disponibilidade basica da API.
 
 ### Meal Image Analysis
 
 ```http
-POST /api/meal-analyses
+POST /api/ai/meal-photo/analyze
+Content-Type: multipart/form-data
 ```
 
-Uso futuro: receber uma imagem de refeicao, solicitar analise por adapter de IA e retornar candidatos de alimentos e porcoes estimadas.
+Recebe uma imagem de refeicao no campo `file`, solicita analise por adapter mock de IA e retorna candidatos de alimentos e porcoes estimadas.
 
 Importante: a imagem nao deve ser salva no banco.
 
@@ -41,10 +42,10 @@ Contrato planejado da Application:
 ### Meal Confirmation
 
 ```http
-POST /api/meal-analyses/{analysisId}/confirm
+POST /api/ai/meal-photo/{analysisId}/confirm
 ```
 
-Uso futuro: confirmar uma analise concluida e criar uma refeicao a partir dos alimentos escolhidos pelo usuario.
+Confirma uma analise concluida e cria uma refeicao a partir dos alimentos escolhidos pelo usuario.
 
 Contrato planejado:
 
@@ -70,7 +71,7 @@ POST /api/meals
 GET /api/meals/today
 ```
 
-Uso futuro: registrar refeicao manual e consultar refeicoes do dia do usuario corrente.
+Registra refeicao manual e consulta refeicoes do dia do usuario corrente.
 
 ### Food Catalog
 
@@ -79,16 +80,16 @@ GET /api/foods?search=rice
 GET /api/foods/{id}
 ```
 
-Uso futuro: consultar base nutricional propria.
+Consulta base nutricional propria.
 
 ### Supplements
 
 ```http
 GET /api/supplements
-POST /api/me/supplements/check-ins
+POST /api/user-supplements/check-in
 ```
 
-Uso futuro: listar suplementos cadastrados e registrar check-ins de suplementos do usuario. Creatina pode nao impactar macros; whey pode impactar macros quando modelado como alimento/suplemento com macronutrientes.
+Lista suplementos cadastrados e registra check-ins de suplementos do usuario. Creatina pode nao impactar macros; whey pode impactar macros quando modelado como alimento/suplemento com macronutrientes.
 
 ### User Goals
 
@@ -107,6 +108,16 @@ POST /api/auth/refresh
 ```
 
 Uso futuro: autenticacao. Nao implementado nesta etapa.
+
+## Erros
+
+Controllers convertem `Result<T>` da Application para HTTP:
+
+- `Validation`: 400.
+- `NotFound`: 404.
+- `Unauthorized`: 401.
+- `Conflict`: 409.
+- `Failure`: 500.
 
 ## Observacoes de produto
 
