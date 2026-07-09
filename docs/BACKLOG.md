@@ -59,11 +59,11 @@ Backlog tecnico por etapas. Este documento orienta a sequencia de evolucao sem a
 
 ## Etapa 5.1: Persistencia executavel para desenvolvimento
 
-- Instalar/configurar `dotnet-ef`.
-- Criar migration inicial.
-- Aplicar schema no SQL Server local.
-- Executar seed de desenvolvimento.
-- Validar endpoints com persistencia real.
+- Instalar/configurar `dotnet-ef`. Concluido.
+- Criar migration inicial. Concluido.
+- Aplicar schema no SQL Server local. Concluido.
+- Executar seed de desenvolvimento. Concluido.
+- Validar endpoints com persistencia real. Concluido.
 
 ## Etapa 6: Autenticacao e usuario corrente
 

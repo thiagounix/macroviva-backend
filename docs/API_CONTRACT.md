@@ -64,6 +64,8 @@ Contrato planejado:
 
 `selectedFoodId` e o alimento final confirmado. Sugestoes da IA nunca devem ser usadas como confirmacao implicita.
 
+Em desenvolvimento, use um ID real retornado por `GET /api/foods`. IDs de exemplo documentais nao devem ser usados como dado final confirmado.
+
 ### Manual Meals
 
 ```http
@@ -72,6 +74,23 @@ GET /api/meals/today
 ```
 
 Registra refeicao manual e consulta refeicoes do dia do usuario corrente.
+
+Exemplo de request:
+
+```json
+{
+  "mealType": 2,
+  "occurredAt": "2026-07-09T12:00:00Z",
+  "items": [
+    {
+      "foodId": "10000000-0000-0000-0000-000000000004",
+      "grams": 120
+    }
+  ]
+}
+```
+
+O `foodId` deve vir de `GET /api/foods`.
 
 ### Food Catalog
 
@@ -122,3 +141,22 @@ Controllers convertem `Result<T>` da Application para HTTP:
 ## Observacoes de produto
 
 O backend nao deve prescrever dieta, suplemento ou medicamento. O usuario sempre confirma ou ajusta dados antes de salvar.
+
+## Smoke test local
+
+Com SQL Server local, migration aplicada e API rodando:
+
+```http
+GET /health
+GET /swagger/v1/swagger.json
+GET /api/foods
+GET /api/foods/{id}
+GET /api/supplements
+POST /api/meals
+GET /api/meals/today
+POST /api/user-supplements/check-in
+POST /api/ai/meal-photo/analyze
+POST /api/ai/meal-photo/{analysisId}/confirm
+```
+
+`GET /api/foods` fornece os IDs reais para refeicoes e confirmacao de analise. `GET /api/supplements` fornece os IDs reais para check-in.

@@ -2,7 +2,7 @@
 
 Backend do MacroViva, uma API para suporte a acompanhamento nutricional e fitness. O backend sera responsavel por receber dados do app mobile, manter a logica de negocio, calcular macronutrientes com base em dados nutricionais proprios e isolar qualquer integracao futura com IA atras de adapters internos.
 
-Esta etapa estabiliza a fundacao tecnica, dominio inicial, Application Layer e Infrastructure Layer. Ainda nao ha endpoints REST de negocio, autenticacao real ou integracao real com IA.
+Esta etapa estabiliza a fundacao tecnica, dominio inicial, Application Layer, Infrastructure Layer, API REST inicial e persistencia executavel para desenvolvimento. Nao ha autenticacao real, pagamentos ou integracao real com IA.
 
 ## Stack
 
@@ -54,24 +54,37 @@ Esta etapa estabiliza a fundacao tecnica, dominio inicial, Application Layer e I
 dotnet restore MacroViva.sln
 dotnet build MacroViva.sln
 dotnet test MacroViva.sln
+```
+
+Rodar API local:
+
+```powershell
 dotnet run --project src/MacroViva.Api --launch-profile http
 ```
 
-Swagger local:
+URLs locais:
 
 ```text
+http://localhost:5169/health
 http://localhost:5169/swagger
+http://localhost:5169/swagger/v1/swagger.json
 ```
 
 ## Banco local para desenvolvimento
 
-Copie `infra/.env.example` para `infra/.env`, ajuste a senha se necessario e execute:
+Para subir o SQL Server local com os valores de desenvolvimento versionados em exemplo:
+
+```powershell
+docker compose --env-file infra/.env.example -f infra/docker-compose.yml up -d
+```
+
+Opcionalmente copie `infra/.env.example` para `infra/.env`, ajuste a senha local e use:
 
 ```powershell
 docker compose --env-file infra/.env -f infra/docker-compose.yml up -d
 ```
 
-O SQL Server local existe apenas como dependencia de desenvolvimento. O backend ja possui `DbContext` e mappings na Infrastructure, mas a API ainda nao expoe endpoints de negocio nem aplica migrations automaticamente.
+O SQL Server local existe apenas como dependencia de desenvolvimento.
 
 Connection string de desenvolvimento esperada:
 
@@ -80,6 +93,28 @@ ConnectionStrings__DefaultConnection=Server=localhost,1433;Database=MacroViva;Us
 ```
 
 Nao versionar senha real. Use `infra/.env` local a partir de `infra/.env.example`.
+
+## Migrations
+
+Se `dotnet-ef` nao estiver instalado:
+
+```powershell
+dotnet tool update --global dotnet-ef
+```
+
+Criar migration:
+
+```powershell
+dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Api --output-dir Persistence/Migrations
+```
+
+Aplicar migration:
+
+```powershell
+dotnet ef database update --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Api
+```
+
+`DesignTimeDbContextFactory` fica na Infrastructure e usa a connection string de desenvolvimento quando necessario.
 
 ## Infrastructure
 
@@ -92,19 +127,15 @@ Nao versionar senha real. Use `infra/.env` local a partir de `infra/.env.example
 - `LocalFileStorageService`, que salva arquivo local e retorna referencia.
 - `MockMealVisionAnalyzer`, sem chamada real a OpenAI ou outro provedor.
 
-Seed preparado:
+Seed de desenvolvimento:
 
 - alimentos iniciais como banana, arroz, feijao, frango, ovo e whey.
 - suplementos iniciais como creatina e whey.
 - planos Free, Plus e Pro.
 
-Migration inicial ainda nao foi criada porque `dotnet-ef` nao esta disponivel no ambiente atual. Com a ferramenta instalada, usar:
+O seed e idempotente por IDs deterministos e pode rodar no startup apenas em Development quando `Seed:RunOnStartup=true` em `appsettings.Development.json`.
 
-```powershell
-dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Infrastructure --output-dir Persistence/Migrations
-```
-
-## Endpoints iniciais
+## Endpoints iniciais e smoke test
 
 ```text
 GET  /health
@@ -118,7 +149,49 @@ GET  /api/supplements
 POST /api/user-supplements/check-in
 ```
 
-Os endpoints aparecem no Swagger. Como ainda nao ha migration/schema aplicado, o teste de persistencia real fica para a proxima etapa.
+Sequencia basica para smoke test local:
+
+1. Subir SQL Server local.
+2. Aplicar migration.
+3. Rodar a API em Development.
+4. Abrir `http://localhost:5169/swagger`.
+5. Executar `GET /api/foods` e usar um `foodId` real retornado pelo seed.
+6. Executar `POST /api/meals`.
+7. Executar `GET /api/meals/today`.
+8. Executar `GET /api/supplements` e usar um `supplementId` real retornado pelo seed.
+9. Executar `POST /api/user-supplements/check-in`.
+10. Executar `POST /api/ai/meal-photo/analyze` com `multipart/form-data`, campo `file`.
+11. Executar `POST /api/ai/meal-photo/{analysisId}/confirm` usando `selectedFoodId` real do catalogo.
+
+Exemplo de corpo para `POST /api/meals`:
+
+```json
+{
+  "mealType": 2,
+  "occurredAt": "2026-07-09T12:00:00Z",
+  "items": [
+    {
+      "foodId": "10000000-0000-0000-0000-000000000004",
+      "grams": 120
+    }
+  ]
+}
+```
+
+Exemplo de corpo para confirmacao de analise:
+
+```json
+{
+  "mealType": 2,
+  "occurredAt": "2026-07-09T12:00:00Z",
+  "items": [
+    {
+      "selectedFoodId": "10000000-0000-0000-0000-000000000004",
+      "grams": 100
+    }
+  ]
+}
+```
 
 ## Documentacao
 

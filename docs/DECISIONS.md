@@ -112,12 +112,13 @@ Em etapa futura, datas locais devem considerar timezone/locale do usuario. A reg
 
 ## MV-020: Migrations
 
-O `DbContext`, mappings e `DesignTimeDbContextFactory` estao prontos para migrations.
+O `DbContext`, mappings e `DesignTimeDbContextFactory` estao prontos para migrations. A migration inicial foi criada na Infrastructure usando a API como startup project.
 
-A migration inicial nao foi criada nesta etapa porque o comando `dotnet ef` nao esta disponivel no ambiente atual. Com a ferramenta instalada, o comando esperado e:
+Comando padrao:
 
 ```powershell
-dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Infrastructure --output-dir Persistence/Migrations
+dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Api --output-dir Persistence/Migrations
+dotnet ef database update --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Api
 ```
 
 ## MV-021: Controllers finos na API
@@ -129,3 +130,17 @@ Controllers devem apenas receber request HTTP, fazer validacoes basicas de trans
 Upload usa `IFormFile` somente na camada API. Antes de chamar Application, o controller converte para `Stream`, `fileName` e `contentType`.
 
 Autenticacao JWT permanece preparada/inativa, sem obrigar autorizacao nos endpoints desta etapa.
+
+## MV-022: Seed de desenvolvimento idempotente
+
+Dados iniciais de desenvolvimento sao inseridos por `DatabaseSeeder` apenas em Development quando `Seed:RunOnStartup=true`.
+
+O seed usa IDs deterministicos para alimentos, suplementos e planos de assinatura. Antes de inserir, consulta os IDs existentes e adiciona apenas os itens ausentes, evitando duplicidade em execucoes repetidas.
+
+O seed nao contem dados sensiveis reais.
+
+## MV-023: Materializacao EF sem abrir o dominio
+
+Entidades, aggregates e value objects mantem encapsulamento e validacoes publicas por factories/construtores expressivos.
+
+Para permitir materializacao pelo EF Core, foram adicionados construtores privados/protegidos sem parametros com inicializadores neutros. Essa decisao e infraestrutura de persistencia e nao deve virar API publica de criacao de objetos invalidos.
