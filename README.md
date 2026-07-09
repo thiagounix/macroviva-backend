@@ -178,13 +178,13 @@ Sequencia basica para smoke test local:
 8. Executar `GET /api/supplements` e usar um `supplementId` real retornado pelo seed.
 9. Executar `POST /api/user-supplements/check-in`.
 10. Executar `POST /api/ai/meal-photo/analyze` com `multipart/form-data`, campo `file`.
-11. Executar `POST /api/ai/meal-photo/{analysisId}/confirm` usando `selectedFoodId` real do catalogo.
+11. Executar `POST /api/ai/meal-photo/{analysisId}/confirm` usando `analysisItemId` real da analise e `selectedFoodId` real do catalogo.
 
 Exemplo de corpo para `POST /api/meals`:
 
 ```json
 {
-  "mealType": 2,
+  "mealType": "Lunch",
   "occurredAt": "2026-07-09T12:00:00Z",
   "items": [
     {
@@ -199,7 +199,7 @@ Exemplo de corpo para confirmacao de analise:
 
 ```json
 {
-  "mealType": 2,
+  "mealType": "Lunch",
   "occurredAt": "2026-07-09T12:00:00Z",
   "items": [
     {

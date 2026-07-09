@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using MacroViva.Application.AIAnalysis;
 using MacroViva.Application.Foods;
 using MacroViva.Application.Meals;
@@ -9,7 +10,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 const string DevelopmentCorsPolicy = "DevelopmentCors";
 
-builder.Services.AddControllers();
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: true));
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

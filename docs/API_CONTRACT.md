@@ -71,7 +71,7 @@ Contrato planejado:
 
 ```json
 {
-  "mealType": 2,
+  "mealType": "Lunch",
   "occurredAt": "2026-01-01T12:00:00Z",
   "items": [
     {
@@ -87,6 +87,8 @@ Contrato planejado:
 
 Em desenvolvimento, use `analysisItemId` real retornado por `POST /api/ai/meal-photo/analyze` e `selectedFoodId` real retornado por `GET /api/foods`. IDs de exemplo documentais nao devem ser usados como dado final confirmado.
 
+`mealType` deve ser enviado como string do enum, por exemplo `Breakfast`, `Lunch`, `Dinner`, `Snack`, `PreWorkout`, `PostWorkout` ou `Other`. Valores numericos continuam aceitos por compatibilidade.
+
 ### Manual Meals
 
 ```http
@@ -100,7 +102,7 @@ Exemplo de request:
 
 ```json
 {
-  "mealType": 2,
+  "mealType": "Lunch",
   "occurredAt": "2026-07-09T12:00:00Z",
   "items": [
     {
@@ -112,6 +114,8 @@ Exemplo de request:
 ```
 
 O `foodId` deve vir de `GET /api/foods`.
+
+`mealType` deve ser enviado como string do enum. Valores numericos continuam aceitos por compatibilidade.
 
 ### Food Catalog
 
