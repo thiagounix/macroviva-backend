@@ -38,13 +38,14 @@ Backlog tecnico por etapas. Este documento orienta a sequencia de evolucao sem a
 
 ## Etapa 4: Infrastructure e persistencia inicial
 
-- Implementar repositorios com EF Core.
-- Criar `DbContext` inicial.
-- Configurar connection string por ambiente.
-- Definir estrategia de migrations.
-- Implementar adapters mock para storage e IA.
-- Adicionar health checks de banco.
-- Criar primeira migration apenas quando houver modelo validado.
+- Implementar repositorios com EF Core. Concluido.
+- Criar `DbContext` inicial. Concluido.
+- Configurar connection string por ambiente. Concluido.
+- Definir estrategia de migrations. Preparado via design-time factory.
+- Implementar adapters mock para storage e IA. Concluido.
+- Preparar seed de desenvolvimento. Concluido.
+- Criar primeira migration quando `dotnet-ef` estiver disponivel.
+- Adicionar health checks de banco em etapa de composicao da API.
 
 ## Etapa 5: API inicial
 
@@ -52,6 +53,7 @@ Backlog tecnico por etapas. Este documento orienta a sequencia de evolucao sem a
 - Usar `async/await` e `CancellationToken`.
 - Padronizar respostas HTTP a partir de `Result<T>`.
 - Adaptar upload HTTP para contratos neutros da Application.
+- Registrar `AddInfrastructure(...)` na composicao da API.
 - Expandir OpenAPI.
 
 ## Etapa 6: Autenticacao e usuario corrente

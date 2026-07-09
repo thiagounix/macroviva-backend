@@ -26,6 +26,7 @@ Stack backend:
 - ASP.NET Core Web API
 - EF Core 10
 - SQL Server
+
 - DDD
 - Clean Architecture
 - REST API

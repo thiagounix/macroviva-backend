@@ -20,7 +20,9 @@ A interface publica inicial sera REST sobre ASP.NET Core Web API. Swagger/OpenAP
 
 ## MV-005: EF Core e SQL Server
 
-EF Core 10 e SQL Server serao a base de persistencia. Nesta etapa os pacotes e ambiente local sao preparados, mas nenhum schema, migration ou `DbContext` real e criado.
+EF Core 10 e SQL Server serao a base de persistencia.
+
+A Infrastructure contem `MacroVivaDbContext`, mappings explicitos, repositorios concretos e `UnitOfWork`. Connection string deve vir de configuracao ou variavel de ambiente, sem senha real versionada.
 
 ## MV-006: Autenticacao preparada, nao implementada
 
@@ -99,3 +101,21 @@ Essa escolha reduz complexidade enquanto os fluxos principais ainda estao sendo 
 `IClock.Today` existe como abstracao simples para consultas e check-ins diarios no MVP.
 
 Em etapa futura, datas locais devem considerar timezone/locale do usuario. A regra atual nao deve ser usada como decisao final para usuarios em fusos diferentes.
+
+## MV-019: Adapters temporarios de Infrastructure
+
+`LocalFileStorageService` salva arquivos em pasta configuravel e retorna apenas referencia local. O banco nao deve armazenar binario de imagem.
+
+`MockMealVisionAnalyzer` simula a resposta de IA para desenvolvimento. OpenAI real, Azure, custos, quotas e politicas de provedor ficam para etapa futura.
+
+`DevelopmentCurrentUserService` fornece usuario corrente fixo/configuravel apenas para desenvolvimento. Ele nao representa login, token, senha, refresh token ou autenticacao real.
+
+## MV-020: Migrations
+
+O `DbContext`, mappings e `DesignTimeDbContextFactory` estao prontos para migrations.
+
+A migration inicial nao foi criada nesta etapa porque o comando `dotnet ef` nao esta disponivel no ambiente atual. Com a ferramenta instalada, o comando esperado e:
+
+```powershell
+dotnet ef migrations add InitialCreate --project src/MacroViva.Infrastructure --startup-project src/MacroViva.Infrastructure --output-dir Persistence/Migrations
+```

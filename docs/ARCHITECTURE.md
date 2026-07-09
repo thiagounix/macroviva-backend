@@ -20,7 +20,19 @@ Nao deve conter detalhes de ASP.NET, EF Core, SQL Server, OpenAI ou provedores e
 
 Camada de detalhes tecnicos. Deve conter implementacoes de persistencia, providers externos, adapters, clock, storage e clientes de servicos externos. Pode depender de `MacroViva.Application` e `MacroViva.Domain`.
 
-EF Core 10 e SQL Server estao preparados por pacote, mas nenhum `DbContext` real foi criado nesta etapa.
+Nesta etapa ela contem:
+
+- `MacroVivaDbContext` com EF Core 10 e provider SQL Server.
+- Mappings por `IEntityTypeConfiguration` para aggregates e entidades iniciais.
+- Repositorios concretos para as portas definidas em `Application`.
+- `UnitOfWork` baseado em `SaveChangesAsync`.
+- `SystemClock`.
+- `DevelopmentCurrentUserService` temporario, sem autenticacao real.
+- `LocalFileStorageService` para salvar arquivo localmente e retornar referencia.
+- `MockMealVisionAnalyzer` para simular analise de imagem sem provedor externo.
+- `DatabaseSeeder` preparado para dados iniciais de desenvolvimento.
+
+Infrastructure nao referencia `MacroViva.Api` e nao contem endpoints, controllers, regras HTTP ou autenticacao.
 
 ### MacroViva.Api
 
@@ -70,3 +82,11 @@ Esses modulos sao candidatos, nao implementacoes desta etapa.
 ## IA
 
 A IA sempre fica atras do backend. O app mobile nunca deve chamar OpenAI ou outro provedor diretamente. A IA identifica alimentos provaveis e estima porcoes; o backend calcula macros e exige confirmacao do usuario antes de salvar.
+
+Na Infrastructure atual, IA e storage sao adapters temporarios:
+
+- `MockMealVisionAnalyzer` retorna candidatos simulados.
+- `LocalFileStorageService` salva a imagem fora do banco e retorna uma referencia local.
+- `MealPhoto` deve armazenar apenas referencia/path/url, nunca binario.
+
+OpenAI real ou qualquer provedor externo ficam para etapa futura.
