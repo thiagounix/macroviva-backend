@@ -88,7 +88,7 @@ public sealed class AnalyzeMealPhotoUseCase(
             var response = new AnalyzeMealPhotoResponse(
                 analysis.Id,
                 storedFile.FileReference,
-                visionResult.Items.Select(ApplicationMapper.ToDto).ToList());
+                analysis.Items.Select(ApplicationMapper.ToDto).ToList());
 
             return Result<AnalyzeMealPhotoResponse>.Success(response);
         }

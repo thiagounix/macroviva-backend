@@ -114,6 +114,7 @@ public sealed class ApplicationUseCaseTests
         Assert.True(result.IsSuccess);
         Assert.NotEqual(Guid.Empty, result.Value!.AnalysisId);
         Assert.Single(result.Value.Items);
+        Assert.NotEqual(Guid.Empty, result.Value.Items[0].AnalysisItemId);
         Assert.Single(analysisRepository.Analyses);
     }
 
@@ -141,7 +142,7 @@ public sealed class ApplicationUseCaseTests
                 analysis.Id,
                 MealType.Lunch,
                 Now,
-                [new ConfirmMealAnalysisItemRequest(rice.Id, 150m)]),
+                [new ConfirmMealAnalysisItemRequest(analysis.Items.First().Id, rice.Id, 150m)]),
             CancellationToken.None);
 
         Assert.True(result.IsSuccess);
@@ -171,7 +172,7 @@ public sealed class ApplicationUseCaseTests
                 analysis.Id,
                 MealType.Lunch,
                 Now,
-                [new ConfirmMealAnalysisItemRequest(Guid.NewGuid(), 100m)]),
+                [new ConfirmMealAnalysisItemRequest(Guid.NewGuid(), Guid.NewGuid(), 100m)]),
             CancellationToken.None);
 
         Assert.True(result.IsFailure);
@@ -197,7 +198,7 @@ public sealed class ApplicationUseCaseTests
                 analysis.Id,
                 MealType.Lunch,
                 Now,
-                [new ConfirmMealAnalysisItemRequest(Guid.NewGuid(), 150m)]),
+                [new ConfirmMealAnalysisItemRequest(analysis.Items.First().Id, Guid.NewGuid(), 150m)]),
             CancellationToken.None);
 
         Assert.True(result.IsFailure);

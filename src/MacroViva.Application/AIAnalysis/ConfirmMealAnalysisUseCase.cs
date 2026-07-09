@@ -56,9 +56,20 @@ public sealed class ConfirmMealAnalysisUseCase(
         try
         {
             var meal = Meal.Create(Guid.NewGuid(), currentUserService.UserId, request.MealType, request.OccurredAt);
+            var analysisItemIds = analysis.Items.Select(item => item.Id).ToHashSet();
 
             foreach (var item in request.Items)
             {
+                if (item.AnalysisItemId == Guid.Empty)
+                {
+                    return Result<MealDto>.Failure(Error.Validation("AIAnalysisItem.InvalidId", "Analysis item id is required."));
+                }
+
+                if (!analysisItemIds.Contains(item.AnalysisItemId))
+                {
+                    return Result<MealDto>.Failure(Error.Validation("AIAnalysisItem.NotFound", $"Analysis item '{item.AnalysisItemId}' was not found in this analysis."));
+                }
+
                 if (item.SelectedFoodId == Guid.Empty)
                 {
                     return Result<MealDto>.Failure(Error.Validation("MealItem.InvalidFoodId", "Selected food id is required."));

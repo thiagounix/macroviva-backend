@@ -203,6 +203,7 @@ Exemplo de corpo para confirmacao de analise:
   "occurredAt": "2026-07-09T12:00:00Z",
   "items": [
     {
+      "analysisItemId": "11111111-1111-1111-1111-111111111111",
       "selectedFoodId": "10000000-0000-0000-0000-000000000004",
       "grams": 100
     }

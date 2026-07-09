@@ -35,9 +35,29 @@ Importante: a imagem nao deve ser salva no banco.
 Contrato planejado da Application:
 
 - Entrada: `content` como stream, `fileName` e `contentType`.
-- Saida: `analysisId`, status da analise e lista de itens detectados.
-- Cada item pode conter nome sugerido, gramas estimadas, confianca e `suggestedFoodId`.
+- Saida: `analysisId`, referencia do arquivo e lista de itens detectados.
+- Cada item contem `analysisItemId`, nome sugerido, gramas estimadas, confianca e pode conter `suggestedFoodId`.
+- `analysisItemId` identifica o item detectado dentro daquela analise e deve ser enviado na confirmacao.
 - `suggestedFoodId` e apenas sugestao; nao confirma alimento final.
+
+Exemplo de resposta:
+
+```json
+{
+  "analysisId": "00000000-0000-0000-0000-000000000000",
+  "fileReference": "local-storage/meal-photos/example.jpg",
+  "items": [
+    {
+      "analysisItemId": "11111111-1111-1111-1111-111111111111",
+      "suggestedFoodName": "Arroz branco cozido",
+      "grams": 120,
+      "confidenceLevel": 3,
+      "confidenceScore": 0.91,
+      "suggestedFoodId": null
+    }
+  ]
+}
+```
 
 ### Meal Confirmation
 
@@ -51,10 +71,11 @@ Contrato planejado:
 
 ```json
 {
-  "mealType": "Lunch",
+  "mealType": 2,
   "occurredAt": "2026-01-01T12:00:00Z",
   "items": [
     {
+      "analysisItemId": "11111111-1111-1111-1111-111111111111",
       "selectedFoodId": "00000000-0000-0000-0000-000000000000",
       "grams": 150
     }
@@ -64,7 +85,7 @@ Contrato planejado:
 
 `selectedFoodId` e o alimento final confirmado. Sugestoes da IA nunca devem ser usadas como confirmacao implicita.
 
-Em desenvolvimento, use um ID real retornado por `GET /api/foods`. IDs de exemplo documentais nao devem ser usados como dado final confirmado.
+Em desenvolvimento, use `analysisItemId` real retornado por `POST /api/ai/meal-photo/analyze` e `selectedFoodId` real retornado por `GET /api/foods`. IDs de exemplo documentais nao devem ser usados como dado final confirmado.
 
 ### Manual Meals
 

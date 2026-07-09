@@ -4,6 +4,7 @@ using MacroViva.Application.Contracts.Common;
 using MacroViva.Application.Contracts.Foods;
 using MacroViva.Application.Contracts.Meals;
 using MacroViva.Application.Contracts.Supplements;
+using MacroViva.Domain.AIAnalysis;
 using MacroViva.Domain.Meals;
 using MacroViva.Domain.Nutrition;
 using MacroViva.Domain.Supplements;
@@ -60,8 +61,20 @@ internal static class ApplicationMapper
     public static DetectedMealItemDto ToDto(MealVisionDetectedItem item)
     {
         return new DetectedMealItemDto(
+            Guid.Empty,
             item.SuggestedFoodName,
             item.Grams,
+            item.ConfidenceLevel,
+            item.ConfidenceScore,
+            item.SuggestedFoodId);
+    }
+
+    public static DetectedMealItemDto ToDto(AIAnalysisItem item)
+    {
+        return new DetectedMealItemDto(
+            item.Id,
+            item.SuggestedFoodName,
+            item.EstimatedPortion.Grams,
             item.ConfidenceLevel,
             item.ConfidenceScore,
             item.SuggestedFoodId);
