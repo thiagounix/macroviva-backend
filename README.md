@@ -149,7 +149,7 @@ Seed de desenvolvimento:
 - suplementos iniciais como creatina e whey.
 - planos Free, Plus e Pro.
 
-O seed e idempotente por IDs deterministicos e pode rodar no startup apenas em Development quando `Seed:RunOnStartup=true` em `appsettings.Development.json`.
+O seed e idempotente por IDs deterministicos e pode rodar no startup em Development ou Staging quando `Seed:RunOnStartup=true`.
 Ele tambem verifica chave natural simples antes de inserir, evitando duplicidade se dados equivalentes ja existirem.
 
 ## Endpoints iniciais e smoke test
@@ -220,3 +220,15 @@ Exemplo de corpo para confirmacao de analise:
 - `docs/SECURITY_PRIVACY.md`: premissas de seguranca, LGPD e dados sensiveis.
 - `docs/AI_CONTRACT.md`: contrato futuro para analise de imagem.
 - `docs/DOMAIN_DISCOVERY.md`: subdominios, bounded contexts e linguagem ubiqua.
+- `docs/DEPLOYMENT.md`: preparo de staging, Azure App Service/Azure SQL e builds beta.
+
+## Staging e beta
+
+Para beta com testers externos, o app nao deve apontar para `localhost` ou
+`10.0.2.2`. Use uma API staging HTTPS e gere o app com:
+
+```powershell
+flutter build appbundle --release --dart-define=API_BASE_URL=https://<api-staging>
+```
+
+Detalhes de preparo e smoke test estao em `docs/DEPLOYMENT.md`.

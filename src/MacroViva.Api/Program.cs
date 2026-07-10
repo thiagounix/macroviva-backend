@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 const string DevelopmentCorsPolicy = "DevelopmentCors";
+const string StagingCorsPolicy = "StagingCors";
 
 builder.Services
     .AddControllers()
@@ -27,6 +28,24 @@ builder.Services.AddCors(options =>
             .AllowAnyOrigin()
             .AllowAnyHeader()
             .AllowAnyMethod());
+
+    options.AddPolicy(
+        StagingCorsPolicy,
+        policy =>
+        {
+            var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
+            if (allowedOrigins.Length == 0)
+            {
+                policy.SetIsOriginAllowed(_ => false);
+                return;
+            }
+
+            policy
+                .WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -48,10 +67,13 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    if (app.Configuration.GetValue<bool>("OpenApi:Enabled", app.Environment.IsDevelopment()))
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
     if (app.Configuration.GetValue<bool>("Seed:RunOnStartup"))
     {
@@ -66,6 +88,10 @@ app.UseHttpsRedirection();
 if (app.Environment.IsDevelopment())
 {
     app.UseCors(DevelopmentCorsPolicy);
+}
+else if (app.Environment.IsStaging())
+{
+    app.UseCors(StagingCorsPolicy);
 }
 
 app.UseAuthentication();
