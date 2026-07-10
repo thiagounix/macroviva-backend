@@ -22,7 +22,11 @@ internal static class ApplicationMapper
             food.Name.Locale,
             food.Category,
             food.NutritionPer100g.Macronutrients.ToDto(),
-            food.IsSupplement);
+            food.IsSupplement,
+            food.Portions
+                .OrderBy(portion => portion.Portion.Grams)
+                .Select(portion => portion.ToDto(food))
+                .ToList());
     }
 
     public static MealDto ToDto(Meal meal)
@@ -87,6 +91,28 @@ internal static class ApplicationMapper
             macronutrients.ProteinGrams,
             macronutrients.CarbohydrateGrams,
             macronutrients.FatGrams);
+    }
+
+    private static FoodPortionDto ToDto(this FoodPortion portion, Food food)
+    {
+        return new FoodPortionDto(
+            portion.Id,
+            portion.Name.Value,
+            PortionLabel(portion.Name.Value),
+            portion.Portion.Grams,
+            food.CalculateFor(portion.Portion).ToDto());
+    }
+
+    private static string PortionLabel(string name)
+    {
+        return name.Trim().ToLowerInvariant() switch
+        {
+            "pequena" => "P",
+            "média" => "M",
+            "media" => "M",
+            "grande" => "G",
+            _ => name
+        };
     }
 
     private static MealItemDto ToDto(MealItem item)

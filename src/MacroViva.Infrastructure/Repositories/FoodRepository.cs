@@ -11,6 +11,7 @@ public sealed class FoodRepository(MacroVivaDbContext dbContext) : IFoodReposito
     {
         var query = dbContext.Foods
             .AsNoTracking()
+            .Include(food => food.Portions)
             .AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(search))

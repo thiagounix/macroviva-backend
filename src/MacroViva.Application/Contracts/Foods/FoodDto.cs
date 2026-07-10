@@ -9,4 +9,5 @@ public sealed record FoodDto(
     LocaleCode Locale,
     FoodCategory Category,
     MacronutrientsDto NutritionPer100g,
-    bool IsSupplement);
+    bool IsSupplement,
+    IReadOnlyList<FoodPortionDto> Portions);
