@@ -9,4 +9,8 @@ public sealed record SupplementDto(
     LocaleCode Locale,
     SupplementType Type,
     MacronutrientsDto MacronutrientsPerServing,
-    bool ImpactsMacronutrients);
+    bool ImpactsMacronutrients,
+    string Description,
+    string SafetyNote,
+    bool RequiresProfessionalGuidance,
+    bool HasStimulantWarning);

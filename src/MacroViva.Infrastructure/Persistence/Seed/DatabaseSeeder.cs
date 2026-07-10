@@ -129,10 +129,33 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
                 SupplementNaturalKey(supplement.Name, supplement.Type)
             })
             .ToHashSet();
+        var existingIds = existingSupplements
+            .Select(supplement => supplement.Id)
+            .ToHashSet();
 
         dbContext.Supplements.AddRange(supplements.Where(supplement =>
+            !existingIds.Contains(supplement.Id) &&
             !existingKeys.Contains(SupplementKey(supplement.Id, supplement.Name.Value, supplement.Type)) &&
             !existingKeys.Contains(SupplementNaturalKey(supplement.Name.Value, supplement.Type))));
+
+        var existingSupplementEntities = await dbContext.Supplements
+            .Where(supplement => supplementIds.Contains(supplement.Id))
+            .ToListAsync(cancellationToken);
+
+        foreach (var existingSupplement in existingSupplementEntities)
+        {
+            var seedSupplement = supplements.First(supplement => supplement.Id == existingSupplement.Id);
+
+            if (existingSupplement.Name.Value != seedSupplement.Name.Value)
+            {
+                existingSupplement.Rename(seedSupplement.Name);
+            }
+
+            if (existingSupplement.MacronutrientsPerServing != seedSupplement.MacronutrientsPerServing)
+            {
+                existingSupplement.UpdateMacronutrients(seedSupplement.MacronutrientsPerServing);
+            }
+        }
     }
 
     private async Task AddMissingSubscriptionPlansAsync(CancellationToken cancellationToken)
@@ -315,11 +338,51 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
         [
             Supplement.CreateCreatine(
                 Guid.Parse("20000000-0000-0000-0000-000000000001"),
-                Name("Creatina monohidratada generica")),
+                Name("Creatina monohidratada genérica")),
             Supplement.CreateWheyProtein(
                 Guid.Parse("20000000-0000-0000-0000-000000000002"),
-                Name("Whey protein generico"),
-                new Macronutrients(120m, 24m, 3m, 2m))
+                Name("Whey protein genérico"),
+                new Macronutrients(120m, 24m, 3m, 2m)),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000003"),
+                Name("Pré-treino com cafeína"),
+                SupplementType.PreWorkout,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000004"),
+                Name("BCAA"),
+                SupplementType.Other,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000005"),
+                Name("Beta-alanina"),
+                SupplementType.Other,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000006"),
+                Name("Citrulina malato"),
+                SupplementType.Other,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000007"),
+                Name("Eletrólitos"),
+                SupplementType.Other,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000008"),
+                Name("Ômega-3"),
+                SupplementType.Other,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000009"),
+                Name("Vitamina D"),
+                SupplementType.Vitamin,
+                EmptyMacros()),
+            Supplement.Create(
+                Guid.Parse("20000000-0000-0000-0000-000000000010"),
+                Name("Magnésio"),
+                SupplementType.Mineral,
+                EmptyMacros())
         ];
     }
 
@@ -362,6 +425,11 @@ public sealed class DatabaseSeeder(MacroVivaDbContext dbContext)
         decimal fatGrams)
     {
         return new NutritionPer100g(new Macronutrients(calories, proteinGrams, carbohydrateGrams, fatGrams));
+    }
+
+    private static Macronutrients EmptyMacros()
+    {
+        return new Macronutrients(0m, 0m, 0m, 0m);
     }
 
     private static FoodPortion Portion(string id, string foodId, string name, decimal grams)

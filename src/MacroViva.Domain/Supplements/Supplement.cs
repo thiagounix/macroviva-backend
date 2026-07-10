@@ -63,7 +63,17 @@ public sealed class Supplement : AggregateRoot
 
     public static Supplement CreateCreatine(Guid id, LocalizedName name)
     {
-        return new Supplement(id, name, SupplementType.Creatine, Macronutrients.Zero);
+        return new Supplement(id, name, SupplementType.Creatine, new Macronutrients(0m, 0m, 0m, 0m));
+    }
+
+    public void Rename(LocalizedName name)
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+    }
+
+    public void UpdateMacronutrients(Macronutrients macronutrientsPerServing)
+    {
+        MacronutrientsPerServing = macronutrientsPerServing ?? throw new ArgumentNullException(nameof(macronutrientsPerServing));
     }
 
     public Macronutrients CalculateImpact(decimal servings)
