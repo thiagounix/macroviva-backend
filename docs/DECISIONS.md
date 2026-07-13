@@ -131,9 +131,9 @@ Upload usa `IFormFile` somente na camada API. Antes de chamar Application, o con
 
 Autenticacao JWT permanece preparada/inativa, sem obrigar autorizacao nos endpoints desta etapa.
 
-## MV-022: Seed de desenvolvimento idempotente
+## MV-022: Seed controlado por configuração e idempotente
 
-Dados iniciais de desenvolvimento sao inseridos por `DatabaseSeeder` apenas em Development quando `Seed:RunOnStartup=true`.
+Dados iniciais sao inseridos por `DatabaseSeeder` somente quando `Seed:RunOnStartup=true`. Development pode habilitar o seed para uso local; Staging tambem pode habilita-lo explicitamente, embora o padrao seja `Seed:RunOnStartup=false` para evitar execucao acidental. O seed permanece controlado por configuracao de ambiente.
 
 O seed usa IDs deterministicos para alimentos, suplementos e planos de assinatura. Antes de inserir, consulta IDs existentes e chave natural simples:
 
