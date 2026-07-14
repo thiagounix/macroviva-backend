@@ -1,10 +1,14 @@
 using System.Text.Json.Serialization;
+using MacroViva.Api.Middleware;
+using MacroViva.Api.Services;
 using MacroViva.Application.AIAnalysis;
+using MacroViva.Application.Abstractions.Services;
 using MacroViva.Application.Foods;
 using MacroViva.Application.Meals;
 using MacroViva.Application.Supplements;
 using MacroViva.Infrastructure;
 using MacroViva.Infrastructure.Persistence.Seed;
+using MacroViva.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +53,29 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
+}
+else if (builder.Environment.IsStaging())
+{
+    var hashingKey = builder.Configuration["BetaTesterIdentity:HashingKey"];
+
+    if (string.IsNullOrWhiteSpace(hashingKey) || hashingKey.Length < 32)
+    {
+        throw new InvalidOperationException(
+            "BetaTesterIdentity:HashingKey must be configured with at least 32 characters in Staging.");
+    }
+
+    builder.Services.AddScoped<IAnonymousBetaUserResolver, AnonymousBetaUserResolver>();
+    builder.Services.AddScoped<ICurrentUserService, StagingHeaderCurrentUserService>();
+}
+else
+{
+    builder.Services.AddScoped<ICurrentUserService, UnconfiguredCurrentUserService>();
+}
 
 builder.Services.AddScoped<SearchFoodsUseCase>();
 builder.Services.AddScoped<GetFoodByIdUseCase>();
@@ -84,6 +111,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 
 if (app.Environment.IsDevelopment())
 {
@@ -92,6 +120,7 @@ if (app.Environment.IsDevelopment())
 else if (app.Environment.IsStaging())
 {
     app.UseCors(StagingCorsPolicy);
+    app.UseMiddleware<StagingTesterIdentityMiddleware>();
 }
 
 app.UseAuthentication();

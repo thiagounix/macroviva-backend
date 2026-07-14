@@ -34,7 +34,6 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddSingleton<IClock, SystemClock>();
-        services.AddScoped<ICurrentUserService, DevelopmentCurrentUserService>();
         services.AddScoped<IFileStorageService, LocalFileStorageService>();
         services.AddScoped<IMealVisionAnalyzer, MockMealVisionAnalyzer>();
         services.AddScoped<DatabaseSeeder>();

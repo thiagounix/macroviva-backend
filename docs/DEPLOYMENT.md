@@ -29,7 +29,13 @@ Obrigatorias:
 ```text
 ASPNETCORE_ENVIRONMENT=Staging
 ConnectionStrings__DefaultConnection=<connection-string-do-azure-sql>
+BetaTesterIdentity__HashingKey=<chave-privada-com-no-minimo-32-caracteres>
 ```
+
+`BetaTesterIdentity__HashingKey` deve ser configurada somente no ambiente. Ela
+deriva a identidade interna temporaria dos testers e nao pode ser versionada.
+Trocar a chave faz o mesmo dispositivo receber outro usuario tecnico e perder o
+vinculo com os dados beta anteriores.
 
 Recomendadas:
 
@@ -87,7 +93,6 @@ $baseUrl = "https://<app-service>.azurewebsites.net"
 Invoke-RestMethod "$baseUrl/health"
 Invoke-RestMethod "$baseUrl/api/foods"
 Invoke-RestMethod "$baseUrl/api/supplements"
-Invoke-RestMethod "$baseUrl/api/meals/today"
 ```
 
 Validacoes esperadas:
@@ -97,6 +102,10 @@ Validacoes esperadas:
 - `/api/supplements` retorna `description`, `safetyNote`,
   `requiresProfessionalGuidance` e `hasStimulantWarning`.
 - Swagger fica disponivel em Staging apenas se `OpenApi__Enabled=true`.
+
+Os endpoints de catalogo permanecem publicos. Endpoints que registram ou leem
+dados do tester exigem o header `X-MacroViva-Tester-Id` com UUID canonico. Veja
+`docs/BETA-TESTER-ISOLATION.md` para os limites desse mecanismo temporario.
 
 ## Build mobile beta apontando para staging
 
@@ -138,7 +147,7 @@ flutter build ipa --release --dart-define=API_BASE_URL=https://<api-staging>
 
 ## Limitacao atual
 
-O backend ainda usa `DevelopmentCurrentUserService` e `MockMealVisionAnalyzer`.
-Isso e aceitavel para beta fechado controlado, mas nao deve ser tratado como
-producao publica com usuarios reais, autenticacao real ou dados sensiveis sem
-as proximas etapas de seguranca.
+Em Staging, o backend usa uma identidade anonima por instalacao para separar
+testers. Isso nao e autenticacao e nao deve ser tratado como producao publica
+com usuarios reais ou dados sensiveis. `MockMealVisionAnalyzer` continua ativo
+ate a etapa de IA real.

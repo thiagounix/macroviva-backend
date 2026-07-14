@@ -7,6 +7,7 @@ namespace MacroViva.Api.Controllers;
 
 [ApiController]
 [Route("api/meals")]
+[RequiresTesterIdentity]
 public sealed class MealsController(
     CreateManualMealUseCase createManualMealUseCase,
     GetTodayMealsUseCase getTodayMealsUseCase) : ControllerBase

@@ -20,6 +20,7 @@ public sealed class SupplementsController(
     }
 
     [HttpPost("api/user-supplements/check-in")]
+    [RequiresTesterIdentity]
     [ProducesResponseType(typeof(UserSupplementDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CheckIn(

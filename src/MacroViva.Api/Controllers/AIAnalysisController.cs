@@ -10,6 +10,7 @@ namespace MacroViva.Api.Controllers;
 
 [ApiController]
 [Route("api/ai/meal-photo")]
+[RequiresTesterIdentity]
 public sealed class AIAnalysisController(
     AnalyzeMealPhotoUseCase analyzeMealPhotoUseCase,
     ConfirmMealAnalysisUseCase confirmMealAnalysisUseCase) : ControllerBase
